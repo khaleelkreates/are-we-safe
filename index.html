@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+  <title>Are We Safe? 🎂 FLAMES · birthday edition</title>
+  <!-- Professional, Canva-inspired design system: playful yet polished, emoji-friendly, vibrant but crisp -->
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background: linear-gradient(145deg, #fce8d9 0%, #ffddc4 100%);
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, sans-serif;
+      padding: 2rem 1.5rem;
+      min-height: 100vh;
+      color: #1f1a15;
+    }
+
+    /* main card — Canva template smoothness: large radius, soft shadow, clean */
+    .canva-card {
+      max-width: 920px;
+      margin: 0 auto;
+      background: #ffffff;
+      border-radius: 48px;
+      box-shadow: 0 25px 45px -12px rgba(0, 0, 0, 0.2), 0 2px 6px rgba(0, 0, 0, 0.02);
+      overflow: hidden;
+      transition: transform 0.2s ease;
+    }
+
+    /* inner spacing */
+    .card-inner {
+      padding: 2.4rem 2.2rem 2.6rem;
+    }
+
+    /* header with birthday flair */
+    .birthday-header {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      margin-bottom: 1.2rem;
+      border-bottom: 2px solid #ffe1c4;
+      padding-bottom: 1rem;
+    }
+
+    h1 {
+      font-size: 2.2rem;
+      font-weight: 700;
+      background: linear-gradient(120deg, #e25c2c, #f39c12);
+      background-clip: text;
+      -webkit-background-clip: text;
+      color: transparent;
+      letter-spacing: -0.3px;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .birthday-tag {
+      background: #ffefe3;
+      padding: 0.3rem 1rem;
+      border-radius: 100px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: #c25b2c;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    /* story panel — fresh, airy, with soft background */
+    .story-panel {
+      background: #fefaf5;
+      border-radius: 32px;
+      padding: 1.6rem 1.8rem;
+      margin: 1.5rem 0 2rem 0;
+      border: 1px solid #ffeedd;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.02);
+    }
+
+    .story-panel p {
+      margin-bottom: 1rem;
+      font-size: 0.96rem;
+      line-height: 1.55;
+      color: #2d2a25;
+    }
+
+    .story-panel p:last-child {
+      margin-bottom: 0;
+    }
+
+    .story-panel strong {
+      color: #e25c2c;
+      font-weight: 600;
+    }
+
+    /* interactive zone — canva component style */
+    .destiny-card {
+      background: #ffffff;
+      border-radius: 36px;
+      padding: 2rem 1.8rem;
+      text-align: center;
+      box-shadow: 0 6px 14px rgba(0, 0, 0, 0.03), inset 0 0 0 1px rgba(255, 215, 175, 0.5);
+      transition: all 0.2s;
+    }
+
+    .destiny-card h2 {
+      font-size: 1.7rem;
+      font-weight: 700;
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      color: #1f2a2e;
+    }
+
+    .input-group {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 1rem;
+      margin: 1.8rem 0 1.2rem;
+    }
+
+    /* sleek modern inputs */
+    input {
+      background: #fefaf5;
+      border: 1.5px solid #f3e1cf;
+      padding: 0.85rem 1.2rem;
+      width: 240px;
+      font-size: 0.95rem;
+      font-weight: 500;
+      font-family: 'Inter', monospace;
+      color: #2d281f;
+      border-radius: 60px;
+      outline: none;
+      transition: 0.2s;
+    }
+
+    input:focus {
+      border-color: #f39c12;
+      box-shadow: 0 0 0 3px rgba(243, 156, 18, 0.2);
+      background: white;
+    }
+
+    /* primary button — playful but premium */
+    .check-btn {
+      background: linear-gradient(95deg, #ff825c, #ff5e2e);
+      border: none;
+      padding: 0.85rem 2rem;
+      font-size: 1rem;
+      font-weight: 600;
+      font-family: 'Inter', sans-serif;
+      color: white;
+      border-radius: 60px;
+      cursor: pointer;
+      transition: all 0.2s;
+      box-shadow: 0 4px 10px rgba(226, 92, 44, 0.25);
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .check-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 12px 20px rgba(226, 92, 44, 0.3);
+      background: linear-gradient(95deg, #ff946c, #ff4a1a);
+    }
+
+    .check-btn:active {
+      transform: translateY(1px);
+    }
+
+    /* result block — glassy modern with fresh animation */
+    .result-modern {
+      margin-top: 2rem;
+      background: #fff9f2;
+      border-radius: 32px;
+      padding: 1.2rem;
+      opacity: 0;
+      transform: scale(0.95) translateY(10px);
+      transition: opacity 0.4s cubic-bezier(0.2, 0.85, 0.4, 1), transform 0.4s cubic-bezier(0.2, 0.85, 0.4, 1);
+      border: 1px solid #ffe1c4;
+      box-shadow: 0 8px 18px rgba(0, 0, 0, 0.05);
+    }
+
+    .result-modern.show {
+      opacity: 1;
+      transform: scale(1) translateY(0);
+    }
+
+    /* fresh loading/refreshing state */
+    .result-modern.refreshing {
+      opacity: 0;
+      transform: scale(0.92) translateY(8px);
+      transition: none;
+    }
+
+    .result-headline {
+      font-size: 2rem;
+      font-weight: 800;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-bottom: 8px;
+    }
+
+    .result-desc {
+      font-size: 0.95rem;
+      color: #4d3e30;
+      margin-top: 8px;
+      font-weight: 500;
+    }
+
+    .result-footnote {
+      font-size: 0.7rem;
+      margin-top: 12px;
+      color: #bb8b63;
+      border-top: 1px dashed #f5e2cf;
+      padding-top: 8px;
+      display: inline-block;
+    }
+
+    .footer-credit {
+      margin-top: 2.2rem;
+      text-align: center;
+      font-size: 0.7rem;
+      opacity: 0.65;
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    @media (max-width: 620px) {
+      body {
+        padding: 1rem;
+      }
+      .card-inner {
+        padding: 1.5rem;
+      }
+      .story-panel {
+        padding: 1.2rem;
+      }
+      .destiny-card {
+        padding: 1.2rem;
+      }
+      .result-headline {
+        font-size: 1.6rem;
+      }
+      h1 {
+        font-size: 1.7rem;
+      }
+    }
+
+    /* button loading indicator */
+    .check-btn.loading {
+      opacity: 0.7;
+      cursor: wait;
+      transform: none;
+    }
+  </style>
+</head>
+<body>
+<div class="canva-card">
+  <div class="card-inner">
+    <!-- header with birthday vibe restored -->
+    <div class="birthday-header">
+      <h1>
+        <span>🎂</span> Are We Safe? <span>😂</span>
+      </h1>
+      <div class="birthday-tag">
+        <span>🎈</span> birthday reflection · FLAMES 2.0
+      </div>
+    </div>
+
+    <!-- story section: emojis, warmth, no em dashes, birthday energy -->
+    <div class="story-panel">
+      <p>Happy Birthday to me! 🥳 Another year, less seriousness, more laughter. The world is loud, but peace is sometimes just sitting beside someone without pressing a phone. Like that Tuesday last week. She was complaining about work, one aunty stressing her life, and I was there forming a serious adviser. But truthfully? I was just watching her face. The way she says "see ehn" before making a strong point.</p>
+      <p>When she asked why I was smiling, I told her, "Nothing. I just like you." She rolled her eyes, but that small shy smile came out. That day I realized love is not always butterflies. Sometimes it is knowing that even if NEPA takes light and the whole world is upside down, as long as she is there, you are alright. 💫</p>
+      <p>But because it is my birthday and I want to lift the mood, I decided to dust off something from childhood. <strong>🔥 FLAMES. 🔥</strong> Yes, I know we are grown. But today, I am seeking clarity through arithmetic. I crossed out letters like my future depended on it. <strong>Final letter standing… M. Marriage. 😂</strong> In my head, we have picked wedding colors. In reality, she hasn't replied to my text since Thursday. But it is my birthday. Let me enjoy my delusion.</p>
+      <p>So I built this for you too. A little birthday oracle with emojis and zero stress. 🎂✨</p>
+    </div>
+
+    <!-- interactive FLAMES zone -->
+    <div class="destiny-card">
+      <h2>
+        <span>✨</span> Check your own destiny <span>😂</span>
+      </h2>
+      
+      <div class="input-group">
+        <input type="text" id="name1" placeholder="Your name" autocomplete="off">
+        <input type="text" id="name2" placeholder="Their name" autocomplete="off">
+      </div>
+      <button class="check-btn" onclick="calculateFlames()">
+        <span>🔮</span> Check am <span>🎈</span>
+      </button>
+      <div id="resultBox" class="result-modern"></div>
+    </div>
+
+    <div class="footer-credit">
+      <span>🎂 Made with vibes, small delusion & birthday energy</span>
+      <span>🔥 GRID method · fair & transparent</span>
+    </div>
+  </div>
+</div>
+
+<script>
+  // FLAMES engine - GRID METHOD (direct modulo lookup)
+  // This is the fair, transparent method that users expect
+  // Mapping: 1=F, 2=L, 3=A, 4=M, 5=E, 0=S (for multiples of 6)
+  // The logic runs behind the scenes - no visual grid displayed
+  
+  function calculateFlames() {
+    const name1Raw = document.getElementById("name1").value;
+    const name2Raw = document.getElementById("name2").value;
+    const resultDiv = document.getElementById("resultBox");
+    const checkBtn = document.querySelector(".check-btn");
+
+    // Add loading state to button for better UX
+    checkBtn.classList.add("loading");
+    
+    // STEP 1: Clear previous result with a refresh animation
+    resultDiv.classList.remove("show");
+    resultDiv.classList.add("refreshing");
+    
+    // Force a reflow to ensure the removal animation is visible
+    void resultDiv.offsetWidth;
+    
+    setTimeout(() => {
+      // Validate inputs
+      if (!name1Raw || !name2Raw) {
+        resultDiv.innerHTML = `
+          <div class="result-headline">🙅🏽‍♀️ Oops! 🙅🏽‍♂️</div>
+          <div class="result-desc">Abeg enter both names 😭. No vex, type am well.</div>
+          <div class="result-footnote">🎂 birthday rules: two names required</div>
+        `;
+        resultDiv.classList.remove("refreshing");
+        resultDiv.classList.add("show");
+        checkBtn.classList.remove("loading");
+        return;
+      }
+
+      let name1 = name1Raw.trim().toLowerCase().replace(/\s+/g, '');
+      let name2 = name2Raw.trim().toLowerCase().replace(/\s+/g, '');
+
+      if (name1.length === 0 || name2.length === 0) {
+        resultDiv.innerHTML = `
+          <div class="result-headline">📛 Empty name? 📛</div>
+          <div class="result-desc">Put real names abeg. Even nickname works 😂</div>
+          <div class="result-footnote">✨ try again with love ✨</div>
+        `;
+        resultDiv.classList.remove("refreshing");
+        resultDiv.classList.add("show");
+        checkBtn.classList.remove("loading");
+        return;
+      }
+
+      // Step 1: Cancel common letters (standard FLAMES letter cancellation)
+      let arr1 = name1.split('');
+      let arr2 = name2.split('');
+
+      for (let i = 0; i < arr1.length; i++) {
+        const ch = arr1[i];
+        if (ch === '') continue;
+        const idxIn2 = arr2.indexOf(ch);
+        if (idxIn2 !== -1) {
+          arr1[i] = '';
+          arr2[idxIn2] = '';
+        }
+      }
+
+      const leftover = (arr1.join('') + arr2.join('')).replace(/\s/g, '');
+      let count = leftover.length;
+
+      // Edge case: zero remaining means all letters cancelled (identical letter sets)
+      if (count === 0) {
+        resultDiv.innerHTML = `
+          <div class="result-headline">🌀 Same person? You dey whine? 🌀</div>
+          <div class="result-desc">Mirror soul alert! Every letter cancelled out. That's rare magic ✨</div>
+          <div class="result-footnote">😂 maybe you are each other's echo. Infinite bond 🤝</div>
+        `;
+        resultDiv.classList.remove("refreshing");
+        resultDiv.classList.add("show");
+        checkBtn.classList.remove("loading");
+        return;
+      }
+
+      // GRID METHOD: Direct modulo lookup (fair and transparent)
+      // Mapping: remainder 1=F, 2=L, 3=A, 4=M, 5=E, 0=S
+      let remainder = count % 6;
+      let flameLetter = "";
+      let resultCategory = {};
+      
+      // FLAMES categories with full emoji + descriptions
+      const flamesMap = {
+        "F": { name: "Friends 🤝", emoji: "🤝", msg: "No pressure, just vibes. Real friendship is golden. This bond is built to last. 🎉", extra: "Bestie energy — reliable and sweet. This bond is precious and worth protecting." },
+        "L": { name: "Lovers ❤️", emoji: "❤️", msg: "Something dey cook 👀. Heart don catch feelings. Romantic energy is flowing between you.", extra: "Romance loading... send that text back. Today is a sign from the universe. Don't let the spark fade." },
+        "A": { name: "Affection 😊", emoji: "😊", msg: "Soft spot detected! Sweet affection dey flow. Keep nurturing this beautiful connection.", extra: "That warm, fuzzy feeling. Nurture it gently. Something beautiful might be growing." },
+        "M": { name: "Marriage 💍", emoji: "💍", msg: "Start planning introduction 😭. This has serious long-term potential. Wedding bells loading 🥂", extra: "Better start saving for aso-ebi! And don't forget the birthday cake. This connection has serious foundation." },
+        "E": { name: "Enemies 💀", emoji: "💀", msg: "Maintain distance abeg. No vex, space is peace. Protect your energy.", extra: "Sometimes the universe says 'not right now'. Focus on your own growth. What's meant for you will find you." },
+        "S": { name: "Siblings 😂", emoji: "😂", msg: "Too familiar vibes! But family energy is special. This is a safe, comfortable bond.", extra: "A bond like family. You can be your authentic self around each other. That's priceless." }
+      };
+      
+      // Determine flame letter using grid method
+      if (remainder === 1) {
+        flameLetter = "F";
+      } else if (remainder === 2) {
+        flameLetter = "L";
+      } else if (remainder === 3) {
+        flameLetter = "A";
+      } else if (remainder === 4) {
+        flameLetter = "M";
+      } else if (remainder === 5) {
+        flameLetter = "E";
+      } else { // remainder === 0
+        flameLetter = "S";
+      }
+      
+      resultCategory = flamesMap[flameLetter];
+      
+      // Poetic note about the count (clean and simple)
+      let letterNote = "";
+      if (count === 1) {
+        letterNote = "⚡ A single letter remains. Destiny speaks softly.";
+      } else if (count <= 6) {
+        letterNote = `✨ ${count} letters remain. The flame has spoken.`;
+      } else {
+        letterNote = `🔢 ${count} letters remain. The universe has made its choice.`;
+      }
+      
+      // Inject fresh result content
+      resultDiv.innerHTML = `
+        <div class="result-headline">
+          ${resultCategory.emoji} ${resultCategory.name} ${resultCategory.emoji}
+        </div>
+        <div class="result-desc">${resultCategory.msg}</div>
+        <div class="result-desc" style="font-size:0.85rem; margin-top: 6px;">✨ ${resultCategory.extra}</div>
+        <div class="result-footnote">🔥 FLAMES count: ${count} · ${letterNote} 🎂</div>
+      `;
+      
+      // Remove refreshing class and trigger show animation
+      resultDiv.classList.remove("refreshing");
+      resultDiv.classList.add("show");
+      checkBtn.classList.remove("loading");
+      
+    }, 180);
+  }
+
+  // Add enter key support for better UX
+  function attachEnterEvents() {
+    const input1 = document.getElementById("name1");
+    const input2 = document.getElementById("name2");
+    const runCalc = () => calculateFlames();
+    input1.addEventListener("keypress", (e) => { if (e.key === "Enter") { e.preventDefault(); runCalc(); } });
+    input2.addEventListener("keypress", (e) => { if (e.key === "Enter") { e.preventDefault(); runCalc(); } });
+  }
+
+  // initial result placeholder with birthday sprinkle
+  window.addEventListener("DOMContentLoaded", () => {
+    attachEnterEvents();
+    const resultDiv = document.getElementById("resultBox");
+    resultDiv.classList.remove("show", "refreshing");
+    resultDiv.innerHTML = `
+      <div class="result-headline">🎈 Ready? 🎈</div>
+      <div class="result-desc">Type two names, click "Check am", and let the magic begin 😂</div>
+      <div class="result-footnote">✨ fair & transparent · GRID method ✨</div>
+    `;
+    resultDiv.style.opacity = "0.85";
+    setTimeout(() => {
+      if (!resultDiv.classList.contains("show")) {
+        resultDiv.style.opacity = "1";
+        resultDiv.classList.add("show");
+      }
+    }, 100);
+  });
+</script>
+</body>
+</html>
