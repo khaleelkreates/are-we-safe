@@ -224,6 +224,17 @@
       filter: brightness(1.05);
     }
 
+    .tryagain-btn {
+      background: linear-gradient(95deg, #f59e0b, #d97706);
+      color: white;
+      margin-top: 8px;
+    }
+
+    .tryagain-btn:hover {
+      transform: translateY(-2px);
+      filter: brightness(1.05);
+    }
+
     .analytics-panel {
       margin-top: 2rem;
       background: #fefaf5;
@@ -288,9 +299,13 @@
 
     .insight-note {
       margin-top: 12px;
-      font-size: 0.7rem;
+      font-size: 0.75rem;
       color: #bb8b63;
       text-align: center;
+      font-weight: 500;
+      padding: 6px;
+      background: #fff6ed;
+      border-radius: 40px;
     }
 
     .result-modern {
@@ -402,7 +417,7 @@
       </div>
     </div>
 
-    <!-- FINAL STORY with smooth transition (Option A: "But anyway... 😅") -->
+    <!-- FINAL STORY with smooth transition -->
     <div class="story-panel">
       <p>🎂 <strong>Birthday Reflection: Another Year Older, Still Counting Letters</strong></p>
       <p>Happy Birthday to me 🥳</p>
@@ -444,7 +459,7 @@
       <div id="actionButtonsContainer" style="margin-top: 16px;"></div>
     </div>
 
-    <!-- Analytics Panel: Daily Trends + Chart -->
+    <!-- Analytics Panel: Daily Trends + Chart with micro emotion -->
     <div class="analytics-panel" id="analyticsPanel">
       <div class="trends-row">
         <div class="trend-badge" id="dailyTrendText">📊 Today's top: loading...</div>
@@ -467,7 +482,7 @@
   // ---------- CONFIGURATION ----------
   const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzyN9uwKWAvEvZtHuPtwGQT8HTa9KodzSzpwsHhZar5jDLnoqnz7hHF4dCECnzm9TQ/exec';
   
-  // ---------- CUSTOM LINKS (UPDATED WITH YOUR ACTUAL LINKS) ----------
+  // ---------- CUSTOM LINKS ----------
   const ANONYMOUS_MESSAGE_LINK = 'https://ngl.link/themankhaleel2';
   const NOTION_BIRTHDAY_LINK = 'https://www.notion.so/The-Man-Khaleel-1ad4a6835c9f8046afddfbbecf8e6983';
   
@@ -519,6 +534,7 @@
       document.getElementById('dailyTrendText').innerHTML = '📊 No plays yet. Be the first! 🎂';
       document.getElementById('totalPlaysBadge').innerHTML = '🎮 total plays: 0';
       renderChart([]);
+      document.getElementById('insightNote').innerHTML = '💡 Be the first to play and shape the vibes ✨';
       return;
     }
     
@@ -527,11 +543,12 @@
     
     const todayStr = new Date().toISOString().split('T')[0];
     const todayPlays = playHistory.filter(p => p.dateStr === todayStr);
+    let topResult = '';
+    let maxCount = 0;
+    
     if (todayPlays.length > 0) {
       const freq = {};
       todayPlays.forEach(p => { freq[p.resultKey] = (freq[p.resultKey] || 0) + 1; });
-      let topResult = '';
-      let maxCount = 0;
       for (let [res, cnt] of Object.entries(freq)) {
         if (cnt > maxCount) { maxCount = cnt; topResult = res; }
       }
@@ -540,6 +557,25 @@
     } else {
       document.getElementById('dailyTrendText').innerHTML = `📊 No plays yet today. Be the first! ✨`;
     }
+    
+    // UPGRADE 4: Chart Micro Emotion - playful insight based on today's top result
+    let insightText = '';
+    if (topResult === 'Marriage') {
+      insightText = '💍 Love is winning today! Someone\'s planning introduction already 😂';
+    } else if (topResult === 'Lovers') {
+      insightText = '❤️ Romance is in the air! The universe is playing matchmaker today ✨';
+    } else if (topResult === 'Enemies') {
+      insightText = '💀 Wahala dey! But don\'t worry, tomorrow is a new day 😅';
+    } else if (topResult === 'Friends') {
+      insightText = '🤝 Solid friendships winning! Bestie energy all around 🎉';
+    } else if (topResult === 'Affection') {
+      insightText = '😊 Soft vibes everywhere. Warm feelings are spreading today 💫';
+    } else if (topResult === 'Siblings') {
+      insightText = '😂 Family energy strong! Safe bonds and familiar comfort 🏡';
+    } else {
+      insightText = '✨ The FLAMES are still settling. Every click adds to the magic!';
+    }
+    document.getElementById('insightNote').innerHTML = `💡 ${insightText}`;
     
     const stats = { Friends:0, Lovers:0, Affection:0, Marriage:0, Enemies:0, Siblings:0 };
     playHistory.forEach(p => { if(stats[p.resultKey] !== undefined) stats[p.resultKey]++; });
@@ -576,13 +612,44 @@
     container.innerHTML = html;
   }
 
-  // Show all three action buttons: Share (WhatsApp), Anonymous Message, Notion Link
+  // UPGRADE 3: "Try another person 😂" button - clears inputs and resets for new play
+  function addTryAgainButton() {
+    const container = document.getElementById('actionButtonsContainer');
+    if (!container) return;
+    
+    // Check if button already exists to avoid duplicates
+    if (document.getElementById('tryAgainBtn')) return;
+    
+    const tryAgainDiv = document.createElement('div');
+    tryAgainDiv.style.marginTop = '8px';
+    tryAgainDiv.innerHTML = `
+      <button class="action-btn tryagain-btn" id="tryAgainBtn" style="background: linear-gradient(95deg, #f59e0b, #d97706);">
+        <span>🔄</span> Try another person 😂
+      </button>
+    `;
+    container.appendChild(tryAgainDiv);
+    
+    const tryAgainBtn = document.getElementById('tryAgainBtn');
+    if (tryAgainBtn) {
+      tryAgainBtn.addEventListener('click', () => {
+        document.getElementById('name1').value = '';
+        document.getElementById('name2').value = '';
+        document.getElementById('resultBox').classList.remove('show');
+        document.getElementById('resultBox').innerHTML = `<div class="result-headline">🎈 Ready? 🎈</div><div class="result-desc">Type two names and let the magic begin 😂</div><div class="result-footnote">✨ fair & transparent · GRID method ✨</div>`;
+        document.getElementById('resultBox').style.opacity = '0.85';
+        document.getElementById('actionButtonsContainer').innerHTML = '';
+        document.getElementById('name1').focus();
+      });
+    }
+  }
+
+  // Show all three action buttons + Try Again button
   function showActionButtons(resultName, nameA, nameB) {
     const container = document.getElementById('actionButtonsContainer');
     if (!container) return;
     
-    // Create share text for WhatsApp
-    const shareText = `🎂 FLAMES oracle says: ${nameA} + ${nameB} = ${resultName} 🔥\nCheck your own destiny at ${window.location.href}`;
+    // Catchy, non-personal share text that teases the game (no names revealed)
+    const shareText = `🔥 I just played the FLAMES game and got "${resultName}"! 🎂\n\nWant to know what FLAMES says about you and your person? Try it yourself and see if the arithmetic is on your side 😂\n\n👉 ${window.location.href}`;
     
     container.innerHTML = `
       <div class="action-group">
@@ -607,7 +674,7 @@
       });
     }
     
-    // Anonymous message button (ngl link)
+    // Anonymous message button
     const messageBtn = document.getElementById('messageBtn');
     if (messageBtn) {
       messageBtn.addEventListener('click', () => {
@@ -622,16 +689,19 @@
         window.open(NOTION_BIRTHDAY_LINK, '_blank');
       });
     }
+    
+    // Add the "Try another person" button
+    addTryAgainButton();
   }
   
-  // Google Sheet logging (existing doGet)
+  // Google Sheet logging
   function saveToGoogleSheet(name1, name2, result) {
     const url = `${GOOGLE_SCRIPT_URL}?name1=${encodeURIComponent(name1)}&name2=${encodeURIComponent(name2)}&result=${encodeURIComponent(result)}`;
     fetch(url, { method: 'GET', mode: 'no-cors' }).catch(e => console.log("sheet log info", e));
     console.log(`📊 Saved to Google Sheet: ${name1} + ${name2} = ${result}`);
   }
 
-  // FLAMES core logic (grid method)
+  // FLAMES core logic (grid method) with UPGRADE 2: Personalized result messages
   function calculateFlames() {
     const name1Raw = document.getElementById("name1").value;
     const name2Raw = document.getElementById("name2").value;
@@ -678,7 +748,7 @@
       
       if (count === 0) {
         const specialResult = "Mirror Soul (Infinite)";
-        resultDiv.innerHTML = `<div class="result-headline">🌀 Same person? You dey whine? 🌀</div><div class="result-desc">Mirror soul alert! Infinite bond 🤝</div>`;
+        resultDiv.innerHTML = `<div class="result-headline">🌀 Same person? You dey whine? 🌀</div><div class="result-desc">${name1Raw} and ${name2Raw}... mirror soul alert! Every letter cancelled out. That's rare magic ✨</div>`;
         resultDiv.classList.remove("refreshing");
         resultDiv.classList.add("show");
         checkBtn.classList.remove("loading");
@@ -692,64 +762,20 @@
       
       let remainder = count % 6;
       let flameLetter = "";
+      
+      // UPGRADE 2: Personalized messages with name integration
       const flamesMap = {
-        "F": { name: "Friends 🤝", emoji: "🤝", msg: "No pressure, just vibes. Real friendship is golden. 🎉", extra: "Bestie energy — reliable and sweet." },
-        "L": { name: "Lovers ❤️", emoji: "❤️", msg: "Something dey cook 👀. Romantic energy is flowing.", extra: "Romance loading... send that text back." },
-        "A": { name: "Affection 😊", emoji: "😊", msg: "Soft spot detected! Sweet affection dey flow.", extra: "That warm, fuzzy feeling. Nurture it gently." },
-        "M": { name: "Marriage 💍", emoji: "💍", msg: "Start planning introduction 😭. Wedding bells loading 🥂", extra: "Better start saving for aso-ebi!" },
-        "E": { name: "Enemies 💀", emoji: "💀", msg: "Maintain distance abeg. Space is peace.", extra: "Focus on your own growth. What's meant for you will find you." },
-        "S": { name: "Siblings 😂", emoji: "😂", msg: "Too familiar vibes! Family energy is special.", extra: "A bond like family. That's priceless." }
+        "F": { name: "Friends 🤝", emoji: "🤝", baseMsg: "No pressure, just vibes. Real friendship is golden.", personalizedMsg: (n1, n2) => `${n1} and ${n2}... bestie energy — reliable and sweet. This bond is built to last. 🎉` },
+        "L": { name: "Lovers ❤️", emoji: "❤️", baseMsg: "Something dey cook 👀. Romantic energy is flowing.", personalizedMsg: (n1, n2) => `${n1} and ${n2}... something dey cook 👀 Heart don catch feelings. Romantic energy is flowing between you two.` },
+        "A": { name: "Affection 😊", emoji: "😊", baseMsg: "Soft spot detected! Sweet affection dey flow.", personalizedMsg: (n1, n2) => `${n1} and ${n2}... soft spot detected! Sweet affection dey flow. That warm, fuzzy feeling — nurture it gently.` },
+        "M": { name: "Marriage 💍", emoji: "💍", baseMsg: "Start planning introduction 😭. Wedding bells loading 🥂", personalizedMsg: (n1, n2) => `${n1} and ${n2}... start planning introduction 😭 This has serious long-term potential. Wedding bells loading 🥂 Better start saving for aso-ebi!` },
+        "E": { name: "Enemies 💀", emoji: "💀", baseMsg: "Maintain distance abeg. Space is peace.", personalizedMsg: (n1, n2) => `${n1} and ${n2}... maintain distance abeg. Space is peace. Focus on your own growth. What's meant for you will find you.` },
+        "S": { name: "Siblings 😂", emoji: "😂", baseMsg: "Too familiar vibes! Family energy is special.", personalizedMsg: (n1, n2) => `${n1} and ${n2}... too familiar vibes! Family energy is special. A bond like family — that's priceless.` }
       };
+      
       if (remainder === 1) flameLetter = "F";
       else if (remainder === 2) flameLetter = "L";
       else if (remainder === 3) flameLetter = "A";
       else if (remainder === 4) flameLetter = "M";
       else if (remainder === 5) flameLetter = "E";
-      else flameLetter = "S";
-      
-      const resultCategory = flamesMap[flameLetter];
-      const letterNote = count <= 6 ? `✨ ${count} letters remain.` : `🔢 ${count} letters remain.`;
-      
-      resultDiv.innerHTML = `
-        <div class="result-headline">${resultCategory.emoji} ${resultCategory.name} ${resultCategory.emoji}</div>
-        <div class="result-desc">${resultCategory.msg}</div>
-        <div class="result-desc" style="font-size:0.85rem; margin-top: 6px;">✨ ${resultCategory.extra}</div>
-        <div class="result-footnote">🔥 FLAMES count: ${count} · ${letterNote} 🎂</div>
-      `;
-      resultDiv.classList.remove("refreshing");
-      resultDiv.classList.add("show");
-      checkBtn.classList.remove("loading");
-      
-      saveToGoogleSheet(name1Raw, name2Raw, resultCategory.name);
-      addPlayRecord(resultCategory.name);
-      currentResultForShare = resultCategory.name;
-      currentNamesForShare = { name1: name1Raw, name2: name2Raw };
-      showActionButtons(resultCategory.name, name1Raw, name2Raw);
-    }, 150);
-  }
-
-  function attachEnterEvents() {
-    const input1 = document.getElementById("name1");
-    const input2 = document.getElementById("name2");
-    const runCalc = () => calculateFlames();
-    input1.addEventListener("keypress", (e) => { if (e.key === "Enter") { e.preventDefault(); runCalc(); } });
-    input2.addEventListener("keypress", (e) => { if (e.key === "Enter") { e.preventDefault(); runCalc(); } });
-  }
-
-  window.addEventListener("DOMContentLoaded", () => {
-    attachEnterEvents();
-    loadHistory();
-    const resultDiv = document.getElementById("resultBox");
-    resultDiv.classList.remove("show", "refreshing");
-    resultDiv.innerHTML = `<div class="result-headline">🎈 Ready? 🎈</div><div class="result-desc">Type two names, click "Check am", and let the magic begin 😂</div><div class="result-footnote">✨ fair & transparent · GRID method ✨</div>`;
-    resultDiv.style.opacity = "0.85";
-    setTimeout(() => {
-      if (!resultDiv.classList.contains("show")) {
-        resultDiv.style.opacity = "1";
-        resultDiv.classList.add("show");
-      }
-    }, 100);
-  });
-</script>
-</body>
-</html>
+      else flame
